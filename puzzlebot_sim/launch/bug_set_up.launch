@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="gui" default="false" />
+  <arg name="rvizconfig" default="$(find puzzlebot_sim)/rviz/config2.rviz" />
+ 
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <!--node pkg="tf" type="static_transform_publisher" name="robot_on_the_map" args="0 0 0 0 0 0 /map /base_link 10"/-->
+  <node pkg="puzzlebot_sim" type="odometry.py" name="covariance"/>
+  <node pkg="puzzlebot_sim" type="dead_reckoning.py" name="dead_reckoning"/>
+  <node pkg="puzzlebot_sim" type="reference_odometry.py" name="reference_odometry"/>
+</launch>
+
