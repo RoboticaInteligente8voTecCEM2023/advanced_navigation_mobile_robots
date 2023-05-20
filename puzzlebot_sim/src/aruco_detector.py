@@ -11,6 +11,7 @@ import numpy as np
 import rospy
 from geometry_msgs.msg import Point, PointStamped
 from sensor_msgs.msg import Image
+from gazebo_msgs.msg import ModelStates
 import cv_bridge
 
 class ArucoDetector():
@@ -21,12 +22,14 @@ class ArucoDetector():
         self.img_pub_output = rospy.Publisher("/processed_image/output",Image,queue_size=1)
         self.wp_pub = rospy.Publisher("/kalman/landmark",PointStamped,queue_size=1)
         self.bridge = cv_bridge.CvBridge()
-        self.img_sub = rospy.Subscriber("/video_source/raw",Image,self.imgCallback)
+        rospy.Subscriber("/camera/image_raw",Image,self.imgCallback)
+        rospy.Subscriber("/gazebo/model_states",ModelStates,self.gzMS_callback) # (simulation only)
         self.rate = rospy.Rate(60)
         self.frame = np.array([[]],dtype="uint8")
         self.aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_50) # must match generated aruco dict
         self.aruco_params = cv2.aruco.DetectorParameters_create() # aruco parameters object
         self.waypoints = {1:Point(1,1,0),2:Point(2,2,0),3:Point(3,3,0),4:Point(4,4,0),5:Point(5,5,0)}
+        self.gz_ms = ModelStates()
 	
     def imgCallback(self,data):
         # callback for the img from camera
@@ -35,6 +38,10 @@ class ArucoDetector():
             self.frame = frame
         except cv_bridge.CvBridgeError():
             print("Error CvBridge")
+    
+    def gzMS_callback(self,msg):
+        # callback for gazebo model states names (simulation only)
+        self.gz_ms = msg
 
     def processImg(self):
 
@@ -51,11 +58,23 @@ class ArucoDetector():
             # flatten markers ids [list]
             ids = ids.flatten()
             if len(ids) == 1:
-                p = PointStamped()
-                p.header.stamp = rospy.Time.now()
-                p.header.frame_id = 'world'
-                p.point = self.waypoints[ids[0]]
-                self.wp_pub.publish(p)
+                search = 'Aruco tag' + str(ids[0]-1)
+                print(search)
+                print('id:%d'%ids[0])
+                try:
+                    i = self.gz_ms.name.index(search)
+                except:
+                    i = -1
+                if i != -1:
+                    p = PointStamped()
+                    p.header.stamp = rospy.Time.now()
+                    p.header.frame_id = 'world'
+                    # from waypoints
+                    # p.point = self.waypoints[ids[0]]
+                    # from gazebo model (simulation only)
+                    p.point = self.gz_ms.pose[i].position
+                    self.wp_pub.publish(p)
+                    print(p)
             # extract and draw
             for (markerCorner,markerID) in zip(corners,ids):
                 # corners returned in the way:
