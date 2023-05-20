@@ -1,27 +1,47 @@
-# aruco detection with video
-# https://pyimagesearch.com/2020/12/21/detecting-aruco-markers-with-opencv-and-python/
+#!/usr/bin/env python
+'''
+Bruno Sanchez Garcia				A01378960
+Carlos Antonio Pazos Reyes 			A01378262
+Manuel Agustin Diaz Vivanco		    A01379673
 
+Nodo para detectar arucos, localizacion y ids
+'''
 import cv2
-# aruco_dict must match generated aruco dict
-aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_50)
-# aruco parameters object
-aruco_params = cv2.aruco.DetectorParameters_create()
+import numpy as np
+import rospy
+from geometry_msgs.msg import Point
+from sensor_msgs.msg import Image
+import cv_bridge
 
-# video constants
-cam = 0
-delay = 1
-window_name = 'Aruco Detector'
+class ArucoDetector():
 
-# cv2 objects
-cap = cv2.VideoCapture(cam)
+    def __init__(self):
+        # constructor node publishers and subscribers
+        rospy.init_node("sign_detector")
+        self.img_pub_output = rospy.Publisher("/processed_image/output",Image,queue_size=1)
+        self.wp_pub = rospy.Publisher("/kalman/landmark",Point,queue_size=1)
+        self.bridge = cv_bridge.CvBridge()
+        self.img_sub = rospy.Subscriber("/video_source/raw",Image,self.imgCallback)
+        self.rate = rospy.Rate(60)
+        self.frame = np.array([[]],dtype="uint8")
+        self.aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_50) # must match generated aruco dict
+        self.aruco_params = cv2.aruco.DetectorParameters_create() # aruco parameters object
+        self.waypoints = {1:Point(1,1,0),2:Point(2,2,0),3:Point(3,3,0),4:Point(4,4,0),5:Point(5,5,0)}
+	
+    def imgCallback(self,data):
+        # callback for the img from camera
+        try:
+            frame = self.bridge.imgmsg_to_cv2(data,desired_encoding="bgr8")
+            self.frame = frame
+        except cv_bridge.CvBridgeError():
+            print("Error CvBridge")
 
-# video capture loop until 'q' pressed
-while True:
-    # read frame from camera 0
-    ret,frame = cap.read()
-    # if receiving frame
-    if ret:
-        (corners,ids,rejected) = cv2.aruco.detectMarkers(frame,aruco_dict,parameters=aruco_params)
+    def processImg(self):
+
+        # copy of image subscriber
+        frame = self.frame
+
+        (corners,ids,rejected) = cv2.aruco.detectMarkers(frame,self.aruco_dict,parameters=self.aruco_params)
         # print('corners',corners)
         # print('ids',ids)
         # print('rejected',rejected)
@@ -30,6 +50,8 @@ while True:
         if len(corners) > 0:
             # flatten markers ids [list]
             ids = ids.flatten()
+            if len(ids) == 1:
+                 self.wp_pub.publish(self.waypoints[ids[0]])
             # extract and draw
             for (markerCorner,markerID) in zip(corners,ids):
                 # corners returned in the way:
@@ -42,10 +64,10 @@ while True:
                 bottomLeft = (int(bottomLeft[0]),int(bottomLeft[1]))
                 topLeft = (int(topLeft[0]),int(topLeft[1]))
                 # draw enclosing rectangle
-                cv2.line(frame,topLeft,topRight,(0,255,0),2)
-                cv2.line(frame,topRight,bottomRight, (0,255,0),2)
-                cv2.line(frame,bottomRight,bottomLeft,(0,255,0),2)
-                cv2.line(frame,bottomLeft,topLeft,(0,255,0),2)
+                cv2.line(frame,topLeft,topRight,(0,255,0),1)
+                cv2.line(frame,topRight,bottomRight, (0,255,0),1)
+                cv2.line(frame,bottomRight,bottomLeft,(0,255,0),1)
+                cv2.line(frame,bottomLeft,topLeft,(0,255,0),1)
                 # draw centroid
                 cX = int((topLeft[0]+bottomRight[0])/2.0)
                 cY = int((topLeft[1]+bottomLeft[1])/2.0)
@@ -53,13 +75,23 @@ while True:
                 # draw aruco ID as text
                 cv2.putText(frame,str(markerID),(topLeft[0],topLeft[1]-15),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),2)
 
-        # show result
-        cv2.imshow(window_name,frame)
+        self.img_pub_output.publish(self.bridge.cv2_to_imgmsg(frame,"bgr8"))
+	
+    def main(self):
+        # main execution while node runs
+        print("Running main...")
+        while not rospy.is_shutdown():
+            try:
+                self.processImg()
+            except Exception as e:
+                print("wait")
+                print(e)
+            self.rate.sleep()
+        # cv2.destroyAllWindows()
 
-    # if 'q' -> exit video capture
-    if cv2.waitKey(delay) & 0xFF == ord('q'):
-        break
-
-# destroy window to end program
-cap.release()
-cv2.destroyWindow(window_name)
+if __name__ == "__main__":
+	try:
+		node = ArucoDetector()
+		node.main()
+	except (rospy.ROSInterruptException, rospy.ROSException):
+		print('topic was closed during publish')
