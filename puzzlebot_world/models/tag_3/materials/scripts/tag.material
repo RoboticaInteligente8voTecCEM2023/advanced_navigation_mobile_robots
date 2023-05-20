@@ -1,0 +1,13 @@
+material Aruco/tag3
+{
+  technique
+  {
+    pass
+    {  
+      texture_unit
+      {
+        texture aruco_id_4.jpg
+      }
+    }
+  }
+}
