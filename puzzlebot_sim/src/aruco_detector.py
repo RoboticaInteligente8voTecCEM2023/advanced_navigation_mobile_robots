@@ -9,6 +9,7 @@ Nodo para detectar arucos, localizacion y ids
 import cv2
 import numpy as np
 import rospy
+from geometry_msgs.msg import Point, PointStamped
 from sensor_msgs.msg import Image
 import cv_bridge
 
@@ -18,12 +19,14 @@ class ArucoDetector():
         # constructor node publishers and subscribers
         rospy.init_node("sign_detector")
         self.img_pub_output = rospy.Publisher("/processed_image/output",Image,queue_size=1)
+        self.wp_pub = rospy.Publisher("/kalman/landmark",PointStamped,queue_size=1)
         self.bridge = cv_bridge.CvBridge()
         self.img_sub = rospy.Subscriber("/video_source/raw",Image,self.imgCallback)
         self.rate = rospy.Rate(60)
         self.frame = np.array([[]],dtype="uint8")
         self.aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_50) # must match generated aruco dict
         self.aruco_params = cv2.aruco.DetectorParameters_create() # aruco parameters object
+        self.waypoints = {1:Point(1,1,0),2:Point(2,2,0),3:Point(3,3,0),4:Point(4,4,0),5:Point(5,5,0)}
 	
     def imgCallback(self,data):
         # callback for the img from camera
@@ -47,6 +50,12 @@ class ArucoDetector():
         if len(corners) > 0:
             # flatten markers ids [list]
             ids = ids.flatten()
+            if len(ids) == 1:
+                p = PointStamped()
+                p.header.stamp = rospy.Time.now()
+                p.header.frame_id = 'world'
+                p.point = self.waypoints[ids[0]]
+                self.wp_pub.publish(p)
             # extract and draw
             for (markerCorner,markerID) in zip(corners,ids):
                 # corners returned in the way:
