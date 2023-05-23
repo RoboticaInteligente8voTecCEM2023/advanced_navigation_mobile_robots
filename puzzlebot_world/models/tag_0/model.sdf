@@ -18,12 +18,19 @@
         </material>
       </visual>
       <visual name='rear_visual'>
-        <pose frame=''>0 0 -0.0025 0 -0 0</pose>
+        <pose frame=''>0 0 -0.0025 0 -0 3.1416</pose>
         <geometry>
           <box>
             <size>0.33 0.33 0.005</size>
           </box>
         </geometry>
+        <material>
+          <script>
+            <uri>file://tag_0/materials/scripts/</uri>
+            <uri>file://tag_0/materials/textures/</uri>
+            <name>Aruco/tag0</name>
+          </script>
+        </material>
       </visual>
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>

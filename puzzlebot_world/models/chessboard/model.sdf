@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="chessboard">
+    <static>true</static>
+    <link name="chessboard_link">
+      <visual name="front_visual">
+        <geometry>
+          <box>
+            <size>0.975 1.342 0.005</size>
+          </box>
+        </geometry>        
+        <material>
+          <script>
+            <uri>file://chessboard/materials/scripts/</uri>
+            <uri>file://chessboard/materials/textures/</uri>
+            <name>chessboard</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='rear_visual'>
+        <pose frame=''>0 0 -0.0025 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.975 1.342 0.005</size>
+          </box>
+        </geometry>
+      </visual>
+      <self_collide>0</self_collide>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+    </link>
+  </model>
+</sdf>
