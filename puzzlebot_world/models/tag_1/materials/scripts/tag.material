@@ -6,7 +6,7 @@ material Aruco/tag1
     {  
       texture_unit
       {
-        texture aruco_id_2.jpg
+        texture aruco_id_1.jpg
       }
     }
   }

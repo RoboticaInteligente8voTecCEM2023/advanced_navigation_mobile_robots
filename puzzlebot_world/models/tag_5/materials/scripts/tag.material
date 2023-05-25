@@ -1,4 +1,4 @@
-material Aruco/tag0
+material Aruco/tag5
 {
   technique
   {
@@ -6,7 +6,7 @@ material Aruco/tag0
     {  
       texture_unit
       {
-        texture aruco_id_0.jpg
+        texture aruco_id_5.jpg
       }
     }
   }

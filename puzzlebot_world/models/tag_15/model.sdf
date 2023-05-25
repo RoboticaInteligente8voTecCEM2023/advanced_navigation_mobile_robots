@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="Aruco tag15">
+    <static>true</static>
+    <link name="robot_link">
+      <visual name="front_visual">
+        <geometry>
+          <box>
+            <size>0.33 0.33 0.005</size>
+          </box>
+        </geometry>        
+        <material>
+          <script>
+            <uri>file://tag_15/materials/scripts/</uri>
+            <uri>file://tag_15/materials/textures/</uri>
+            <name>Aruco/tag15</name>
+          </script>
+        </material>
+      </visual>
+      <visual name='rear_visual'>
+        <pose frame=''>0 0 -0.0025 0 -0 3.1416</pose>
+        <geometry>
+          <box>
+            <size>0.33 0.33 0.005</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://tag_15/materials/scripts/</uri>
+            <uri>file://tag_15/materials/textures/</uri>
+            <name>Aruco/tag15</name>
+          </script>
+        </material>
+      </visual>
+      <self_collide>0</self_collide>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+    </link>
+  </model>
+</sdf>
