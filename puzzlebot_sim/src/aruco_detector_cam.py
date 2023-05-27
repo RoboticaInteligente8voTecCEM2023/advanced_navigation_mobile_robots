@@ -11,6 +11,7 @@ import cv2
 import numpy as np
 import rospy
 from geometry_msgs.msg import Point, PointStamped
+from std_msgs.msg import Float32
 from sensor_msgs.msg import Image
 from gazebo_msgs.msg import ModelStates
 import cv_bridge
@@ -22,7 +23,9 @@ class ArucoDetector():
         rospy.init_node("aruco_detector_camera")
         self.img_pub_output = rospy.Publisher("/processed_image/output",Image,queue_size=1)
         self.wp_pub = rospy.Publisher("/kalman/landmark",PointStamped,queue_size=1)
+        self.dist = rospy.Publisher('/kalman/landmark/distance',Float32,queue_size=1)
         self.bridge = cv_bridge.CvBridge()
+        
         rospy.Subscriber("/camera/image_raw",Image,self.imgCallback)
         rospy.Subscriber("/gazebo/model_states",ModelStates,self.gzMS_callback) # (simulation only)
         self.rate = rospy.Rate(60)
@@ -43,11 +46,13 @@ class ArucoDetector():
         # self.distCoeff = np.array([[ 3.31727510e-03, -1.56623087e-02,  9.45674003e-05,
         #                             -4.47679541e-04,  1.55710703e-02]])
         ### from /camera/camera_info ###
+    
         self.camMtx = np.array([[476.7030836014194,     0.0,                    400.5],
                                 [0.0,                   476.7030836014194,      400.5],
                                 [0.0,                   0.0,                    1.0  ]])
         self.distCoeff = np.array([[0.0,0.0,0.0,0.0,0.0]])
-    
+        
+
     def imgCallback(self,data):
         # callback for the img from camera
         try:
@@ -66,6 +71,7 @@ class ArucoDetector():
         frame = self.frame
 
         gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+        print("gray")
 
         (corners,ids,rejected) = cv2.aruco.detectMarkers(image=gray,
                                                          dictionary=self.aruco_dict,
@@ -86,10 +92,15 @@ class ArucoDetector():
             tvecs = []
             dists = []
             angles = []
+            
             for i in range(len(ids)):
+                
                 # rvec,tvec = cv2.aruco.estimatePoseSingleMarkers(corners,self.markerSizecm,self.camMtx,self.distCoeff)
-                n,r,t = cv2.solvePnP(self.marker_points,corners[i],self.camMtx,self.distCoeff,True,cv2.SOLVEPNP_ITERATIVE)
+                print("entering nrt")
+                n,r,t = cv2.solvePnP(self.marker_points,corners[i],self.camMtx,self.distCoeff,True)
+        
                 cv2.aruco.drawAxis(frame,self.camMtx,self.distCoeff,r,t,2)
+                
                 nadas.append(n)
                 rvecs.append(r)
                 tvecs.append(t)
@@ -121,7 +132,7 @@ class ArucoDetector():
                 # p.point = self.waypoints[ids[0]]
                 # from gazebo model (simulation only)
                 p.point = self.gz_ms.pose[i].position
-                p.point.z = min_dist
+                self.dist.publish(min_dist)
                 self.wp_pub.publish(p)
                 print(p)
             cv2.aruco.drawDetectedMarkers(frame,corners,ids)
