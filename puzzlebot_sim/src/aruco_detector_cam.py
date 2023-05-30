@@ -23,7 +23,8 @@ class ArucoDetector():
         rospy.init_node("aruco_detector_camera")
         self.img_pub_output = rospy.Publisher("/processed_image/output",Image,queue_size=1)
         self.wp_pub = rospy.Publisher("/kalman/landmark",PointStamped,queue_size=1)
-        self.dist = rospy.Publisher('/kalman/landmark/distance',Float32,queue_size=1)
+        self.dist_pub = rospy.Publisher('/kalman/landmark/distance',Float32,queue_size=1)
+        self.ang_pub = rospy.Publisher('kalman/landmark/angle',Float32,queue_size=1)
         self.bridge = cv_bridge.CvBridge()
         
         rospy.Subscriber("/camera/image_raw",Image,self.imgCallback)
@@ -96,7 +97,6 @@ class ArucoDetector():
             for i in range(len(ids)):
                 
                 # rvec,tvec = cv2.aruco.estimatePoseSingleMarkers(corners,self.markerSizecm,self.camMtx,self.distCoeff)
-                print("entering nrt")
                 n,r,t = cv2.solvePnP(self.marker_points,corners[i],self.camMtx,self.distCoeff,True)
         
                 cv2.aruco.drawAxis(frame,self.camMtx,self.distCoeff,r,t,2)
@@ -108,12 +108,12 @@ class ArucoDetector():
                 z = (t[2][0] + 10.0) / 100.0 # add 10cm for distance between camera and base_link frame [m]
                 d = np.sqrt(x**2 + z**2)
                 dists.append(d)
-                # a = np.arctan2(z,x) ############# PENDIENTE
-                # angles.append(a)
-            # print('rvec:',rvecs)
-            # print('tvec:',tvecs)
+                a = np.arctan(z/-x)
+                angles.append(a)
+            print('rvec:',rvecs)
+            print('tvec:',tvecs)
             print('dists:',dists)
-            # print('angles:',angles)
+            print('angles:',angles)
 
             # find min id in distance
             min_dist = min(dists)
@@ -132,11 +132,14 @@ class ArucoDetector():
                 # p.point = self.waypoints[ids[0]]
                 # from gazebo model (simulation only)
                 p.point = self.gz_ms.pose[i].position
-                self.dist.publish(min_dist)
-                self.wp_pub.publish(p)
-                print(p)
+                if min_dist <= 2:
+                    self.dist_pub.publish(min_dist)
+                    self.ang_pub.publish(angles[min_id])
+                    self.wp_pub.publish(p)
+                    print(p)
             cv2.aruco.drawDetectedMarkers(frame,corners,ids)
-
+        else:
+            self.dist_pub.publish(-1.0)
         self.img_pub_output.publish(self.bridge.cv2_to_imgmsg(frame,"bgr8"))
 	
     def main(self):
