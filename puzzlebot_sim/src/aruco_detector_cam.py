@@ -52,6 +52,7 @@ class ArucoDetector():
                                 [0.0,                   476.7030836014194,      400.5],
                                 [0.0,                   0.0,                    1.0  ]])
         self.distCoeff = np.array([[0.0,0.0,0.0,0.0,0.0]])
+        self.counter = []
         
 
     def imgCallback(self,data):
@@ -72,7 +73,6 @@ class ArucoDetector():
         frame = self.frame
 
         gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-        print("gray")
 
         (corners,ids,rejected) = cv2.aruco.detectMarkers(image=gray,
                                                          dictionary=self.aruco_dict,
@@ -83,6 +83,7 @@ class ArucoDetector():
 
         # check at least 1 detection
         if len(corners) > 0:
+            print('aruco(s) detected')
             # flatten markers ids [list]
             ids = ids.flatten()
             # print('ids:',ids,'corners:',corners)
@@ -95,7 +96,7 @@ class ArucoDetector():
             angles = []
             
             for i in range(len(ids)):
-                
+                print('calculating rvecs,tvecs...')
                 # rvec,tvec = cv2.aruco.estimatePoseSingleMarkers(corners,self.markerSizecm,self.camMtx,self.distCoeff)
                 n,r,t = cv2.solvePnP(self.marker_points,corners[i],self.camMtx,self.distCoeff,True)
         
@@ -110,10 +111,11 @@ class ArucoDetector():
                 dists.append(d)
                 a = np.arctan(z/-x)
                 angles.append(a)
-            print('rvec:',rvecs)
-            print('tvec:',tvecs)
-            print('dists:',dists)
-            print('angles:',angles)
+            # print('rvec:',rvecs)
+            # print('tvec:',tvecs)
+            # print('dists:',dists)
+            # print('angles:',angles)
+            print('transformations ready')
 
             # find min id in distance
             min_dist = min(dists)
@@ -123,6 +125,7 @@ class ArucoDetector():
             try:
                 i = self.gz_ms.name.index(search)
             except:
+                print('no aruco with this model name')
                 i = -1
             if i != -1:
                 p = PointStamped()
@@ -132,14 +135,22 @@ class ArucoDetector():
                 # p.point = self.waypoints[ids[0]]
                 # from gazebo model (simulation only)
                 p.point = self.gz_ms.pose[i].position
+                print('point ready')
                 if min_dist <= 2:
+                    print('send point:')
+                    self.counter = []
                     self.dist_pub.publish(min_dist)
-                    self.ang_pub.publish(angles[min_id])
+                    # self.ang_pub.publish(angles[min_id])
                     self.wp_pub.publish(p)
                     print(p)
+                else:
+                    self.counter.append(-1)
+                    print('-1 appended')
+                    if len(self.counter) > 15:
+                        print('-1 published')
+                        self.dist_pub.publish(-1.0)
+                        self.counter = []
             cv2.aruco.drawDetectedMarkers(frame,corners,ids)
-        else:
-            self.dist_pub.publish(-1.0)
         self.img_pub_output.publish(self.bridge.cv2_to_imgmsg(frame,"bgr8"))
 	
     def main(self):
