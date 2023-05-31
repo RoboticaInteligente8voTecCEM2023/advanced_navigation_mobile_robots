@@ -94,6 +94,7 @@ class ArucoDetector():
             tvecs = []
             dists = []
             angles = []
+            arucos_dict = {}
             
             for i in range(len(ids)):
                 print('calculating rvecs,tvecs...')
@@ -109,21 +110,27 @@ class ArucoDetector():
                 z = (t[2][0] + 10.0) / 100.0 # add 10cm for distance between camera and base_link frame [m]
                 d = np.sqrt(x**2 + z**2)
                 dists.append(d)
-                a = np.arctan(z/-x)
+                a = np.arctan2(x,z)
                 angles.append(a)
+                arucos_dict[ids[i]] = [d,a]
             # print('rvec:',rvecs)
-            # print('tvec:',tvecs)
+            print('tvec:',tvecs)
             # print('dists:',dists)
             # print('angles:',angles)
+            print('arucos_dict:',arucos_dict)
             print('transformations ready')
 
             # find min id in distance
-            min_dist = min(dists)
-            min_id = ids[dists.index(min_dist)]
-            search = 'Aruco tag' + str(min_id)
-            print(search)
+            min_dist_idx = arucos_dict.values().index(min(arucos_dict.values()))
+            closest_aruco_id = arucos_dict.keys()[min_dist_idx]
+            # min_dist = min(dists)
+            # min_id = ids[dists.index(min_dist)]
+            search = 'Aruco tag' + str(closest_aruco_id)
+            print('search:',search)
             try:
                 i = self.gz_ms.name.index(search)
+                min_dist = arucos_dict[closest_aruco_id][0]
+                min_angle = arucos_dict[closest_aruco_id][1]
             except:
                 print('no aruco with this model name')
                 i = -1
@@ -136,21 +143,23 @@ class ArucoDetector():
                 # from gazebo model (simulation only)
                 p.point = self.gz_ms.pose[i].position
                 print('point ready')
-                if min_dist <= 2:
+                if min_dist <= 4:
                     print('send point:')
                     self.counter = []
                     self.dist_pub.publish(min_dist)
-                    # self.ang_pub.publish(angles[min_id])
+                    self.ang_pub.publish(min_angle)
                     self.wp_pub.publish(p)
                     print(p)
-                else:
-                    self.counter.append(-1)
-                    print('-1 appended')
-                    if len(self.counter) > 15:
-                        print('-1 published')
-                        self.dist_pub.publish(-1.0)
-                        self.counter = []
+                    print('min_dist:',min_dist)
+                    print('min_angle:',min_angle)
             cv2.aruco.drawDetectedMarkers(frame,corners,ids)
+        else:
+            self.counter.append(-1)
+            print('-1 appended')
+            if len(self.counter) > 15:
+                print('-1 published')
+                self.dist_pub.publish(-1.0)
+                self.counter = []
         self.img_pub_output.publish(self.bridge.cv2_to_imgmsg(frame,"bgr8"))
 	
     def main(self):
