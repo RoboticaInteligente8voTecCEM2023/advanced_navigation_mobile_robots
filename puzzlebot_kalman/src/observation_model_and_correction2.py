@@ -7,7 +7,7 @@ from geometry_msgs.msg import PoseStamped, Twist, Point, Quaternion, PointStampe
 from nav_msgs.msg import Odometry
 from gazebo_msgs.msg import ModelStates
 from std_srvs.srv import Empty, EmptyResponse
-from tf.transformations import euler_from_quaternion
+from tf.transformations import euler_from_quaternion, quaternion_from_euler
 import tf
 
 class Observation_model():
@@ -34,9 +34,9 @@ class Observation_model():
         self.zth_mu = 0.0
         self.zp_s = 0.0
         self.zth_s = 0.0
-        self.kr = 10	# gain right
-        self.kl = 10	# gain left
-        self.R = np.array([[0.02, 0],[0.0, 0.01]])
+        self.kr = 50	# gain right
+        self.kl = 50	# gain left
+        self.R = np.array([[0.02, 0],[0.0, 0.02]])
         self.r = 0.05	# wheel radius
         self.l = 0.188	# distance between wheels
         self.v_k = 0.0
@@ -45,6 +45,7 @@ class Observation_model():
         self.sigma_k = np.zeros((3,3))
         self.odom_pub = rospy.Publisher('/kalman/corrected/odom', Odometry, queue_size=10)
         self.odom = Odometry()
+        self.mu_k = PoseStamped()
         rospy.Subscriber('/kalman/mu', PoseStamped, self.mu_callback)
         rospy.Subscriber('/kalman/s', PoseStamped, self.s_callback)
         rospy.Subscriber('/kalman/landmark', PointStamped, self.landmark_callback)
@@ -59,7 +60,7 @@ class Observation_model():
         self.w_k = msg.angular.z
                 
     def mu_callback(self,msg):
-        self.mu_k = msg
+        self.mu_k_callback = msg
         self.mu_x = msg.pose.position.x
         self.mu_y = msg.pose.position.y
         self.mu_th = self.get_th(msg.pose.orientation)
@@ -78,11 +79,14 @@ class Observation_model():
 
     
     def landmark_callback(self,msg):
-        #print(self.landmark_d)
-        #if self.landmark_d < 2 and self.landmark_d > 0.5:
-            print(msg)
+        
+        if self.landmark_d < 2 and self.landmark_d > 0.5:
+            #print(msg)
             self.landmark_x = msg.point.x
             self.landmark_y = msg.point.y
+        else:
+            self.landmark_d = -1
+        print(self.landmark_d)
 
     def d_callback(self,msg):
         self.landmark_d = msg.data
@@ -111,12 +115,11 @@ class Observation_model():
   
 
     def observation_model(self):
-
+        self.mu_k = self.mu_k_callback
         dt = rospy.Time.now().to_sec() - self.T
 
         if dt > 0.1:
             dt = 1.0/self.F
-        
         mu_th_k_1 = self.get_th(self.mu_k_1.pose.orientation)
         H_k = np.array([[1, 0, -dt*self.v_k*np.sin(mu_th_k_1)],
                         [0, 1,  dt*self.v_k*np.cos(mu_th_k_1)],
@@ -137,8 +140,48 @@ class Observation_model():
 
         self.sigma_k = np.dot(H_k,np.dot(self.sigma_k,H_k.T)) + Q_k
 
+        if self.landmark_d > 0:
+            Dx_mu = self.landmark_x - self.mu_x
+            Dy_mu = self.landmark_y - self.mu_y
+            Dx_s = self.landmark_x - self.s_x
+            Dy_s = self.landmark_y - self.s_y
+            p_mu = (Dx_mu**2) + (Dy_mu**2)
+            # estimado sin ruido
+            self.zp_mu = np.sqrt((Dx_mu**2) + (Dy_mu**2)) 
+            self.zth_mu = np.arctan2(Dy_mu,Dx_mu) - self.mu_th
+            # real, con ruido 
+            self.zp_s = np.sqrt((Dx_s**2) + (Dy_s**2)) 
+            self.zth_s = np.arctan2(Dy_s,Dx_s) - self.s_th
+
+            # Jacobiano de la funcion del modelo de observacion
+
+            Gk = np.array([[-Dx_mu/np.sqrt(p_mu), -Dy_mu/np.sqrt(p_mu), 0],
+                        [Dy_mu/p_mu, -Dx_mu/p_mu, -1 ]])
+            
+            # Covarianza modelo observacion
+            Z_k = np.dot(Gk, np.dot(self.sigma_k, Gk.T)) + self.R
+
+            # Ganancia Kalman
+            K_k = np.dot(self.sigma_k,np.dot(Gk.T, np.linalg.inv(Z_k)))
+
+            #resultado con filtro de kalman
+            mu_k_hat = np.array([[self.mu_x], [self.mu_y],[self.mu_th]])
+            z_i_k = np.array([[self.zp_s],[self.zth_s]])
+            z_i_k_hat = np.array([[self.zp_mu],[self.zth_mu]])
+
+            # correction
+            I = np.eye(self.sigma_k.shape[0])
+            self.sigma_k = np.dot((I - np.dot(K_k,Gk)),self.sigma_k )
+            c_mu_k =  mu_k_hat + np.dot(K_k, (z_i_k - z_i_k_hat))
+            
+            self.mu_k.pose.position = Point(c_mu_k[0][0], c_mu_k[1][0], self.r)
+            
+            quaternion_c_mu_k = quaternion_from_euler(0,0, float(c_mu_k[2][0]))
+            self.mu_k.pose.orientation = Quaternion(quaternion_c_mu_k[0], quaternion_c_mu_k[1],quaternion_c_mu_k[2],quaternion_c_mu_k[3])
+        
 
         # create odom message
+
         self.odom.header.stamp = rospy.Time.now()
         self.odom.header.frame_id = 'world'
         self.odom.child_frame_id = 'base_link'
@@ -169,75 +212,6 @@ class Observation_model():
         self.odom.pose.covariance[14] = 0.0002 # agregar un grosor
 
         self.odom_pub.publish(self.odom)
-    
-        Dx_mu = self.landmark_x - self.mu_x
-        Dy_mu = self.landmark_y - self.mu_y
-        Dx_s = self.landmark_x - self.s_x
-        Dy_s = self.landmark_y - self.s_y
-        p_mu = (Dx_mu**2) + (Dy_mu**2)
-        # estimado sin ruido
-        self.zp_mu = np.sqrt((Dx_mu**2) + (Dy_mu**2)) 
-        self.zth_mu = np.arctan2(Dy_mu,Dx_mu) - self.mu_th
-        # real, con ruido 
-        self.zp_s = np.sqrt((Dx_s**2) + (Dy_s**2)) 
-        self.zth_s = np.arctan2(Dy_s,Dx_s) - self.s_th
-
-        # Jacobiano de la funcion del modelo de observacion
-
-        Gk = np.array([[-Dx_mu/np.sqrt(p_mu), -Dy_mu/np.sqrt(p_mu), 0],
-                       [Dy_mu/p_mu, -Dx_mu/p_mu, -1 ]])
-        
-        # Covarianza modelo observacion
-        Z_k = np.dot(Gk, np.dot(self.sigma_k, Gk.T)) + self.R
-
-        # Ganancia Kalman
-        K_k = np.dot(self.sigma_k,np.dot(Gk.T, np.linalg.inv(Z_k)))
-
-        #resultado con filtro de kalman
-        mu_k_hat = np.array([[self.mu_x], [self.mu_y],[self.mu_th]])
-        z_i_k = np.array([[self.zp_s],[self.zth_s]])
-        z_i_k_hat = np.array([[self.zp_mu],[self.zth_mu]])
-
-        # correction
-        I = np.eye(self.sigma_k.shape[0])
-        c_sigma_k = np.dot((I - np.dot(K_k,Gk)),self.sigma_k )
-        c_mu_k =  mu_k_hat + np.dot(K_k, (z_i_k - z_i_k_hat))
-        
-            
-        
-        
-
-        # create odom message
-        Q = tf.transformations.quaternion_from_euler(0, 0, c_mu_k[2])
-
-        self.odom.header.stamp = rospy.Time.now()
-        self.odom.header.frame_id = 'world'
-        self.odom.child_frame_id = 'base_link'
-        self.odom.pose.pose.position = Point(c_mu_k[0,0],c_mu_k[1,0],self.r)
-        self.odom.pose.pose.orientation = Quaternion(Q[0],Q[1],Q[2],Q[3])
-
-        self.odom.pose.covariance = [0]*36
-        self.odom.twist.twist.linear.x = self.v_k
-        self.odom.twist.twist.linear.y = 0.0
-        self.odom.twist.twist.linear.z = 0.0
-        self.odom.twist.twist.angular.x = 0.0
-        self.odom.twist.twist.angular.y = 0.0
-        self.odom.twist.twist.angular.z = self.w_k
-        self.odom.twist.covariance = [0]*36
-        # sustituir 3x3 a 6x6 matriz covarianza
-        self.odom.pose.covariance[0]  = c_sigma_k[0][0] # xx
-        self.odom.pose.covariance[1]  = c_sigma_k[1][0] # xy
-        self.odom.pose.covariance[5]  = c_sigma_k[2][0] # xth
-        self.odom.pose.covariance[6]  = c_sigma_k[0][1] # yx
-        self.odom.pose.covariance[7]  = c_sigma_k[1][1] # yy
-        self.odom.pose.covariance[11] = c_sigma_k[2][1] # yth
-        self.odom.pose.covariance[30] = c_sigma_k[0][2] # 
-        self.odom.pose.covariance[31] = c_sigma_k[1][2] # 
-        self.odom.pose.covariance[35] = c_sigma_k[2][2] # 
-
-        self.odom.pose.covariance[14] = 0.0002 # agregar un grosor
-
-        self.odom_pub.publish(self.odom)
         #print(self.odom)
         self.mu_k_1 = self.mu_k
         self.s_th_k_1 = self.get_th(self.s_q_k)
@@ -251,10 +225,10 @@ class Observation_model():
         ms = rospy.wait_for_message('kalman/s',ModelStates) # initial k-1 s state
         self.s_th_k_1 = self.get_th(ms.pose.orientation) # initial s state th_k-1
         while not rospy.is_shutdown():
-            try:
-                self.observation_model()
-            except Exception as e :
-                print(e)
+            #try:
+            self.observation_model()
+           # except Exception as e :
+                # print(e)
             self.rate.sleep()
 
 

@@ -20,7 +20,8 @@ class KalmanFilter():
         # node config
         rospy.init_node('kalman_filter')
         self.Fs = 60.0
-        self.dt = 1.0/self.Fs
+        self.T = rospy.Time.now().to_sec()
+        self.dt = 0.0
         self.rate = rospy.Rate(self.Fs)
         # subscribers
         rospy.Subscriber('/cmd_vel',Twist,self.cmd_callback)
@@ -30,15 +31,10 @@ class KalmanFilter():
         rospy.Subscriber('/kalman/landmark/distance',Float32,self.landmark_d_callback)
         rospy.Subscriber('/kalman/landmark/angle',Float32,self.landmark_a_callback)
         # publishers
-        self.pJS = rospy.Publisher('/joint_states',JointState,queue_size=10)
         self.odom_pub = rospy.Publisher('/kalman/corrected/odom',Odometry,queue_size=10)
         # global variables - robot & simulation
         self.r = 0.05
         self.l = 0.188
-        self.t0 = rospy.Time.now()
-        self.frame_id = 'base_link'
-        self.js = JointState()
-        self.js.name = ["base_to_right_w", "base_to_left_w"]
         # global variables - mu
         self.v = 0.0
         self.w = 0.0
@@ -52,16 +48,16 @@ class KalmanFilter():
         self.y_k_s = 0.0
         self.th_k_s = 0.0
         # global variables - motion model
-        self.kl = 8.0
-        self.kr = 8.0
+        self.kl = 95.0
+        self.kr = 95.0
         self.sigma_k = np.zeros((3,3))
         # global variables - observation model
         self.landmark_x = 0.0
         self.landmark_y = 0.0
         self.landmark_d = 0.0
         self.landmark_a = 0.0
-        self.R = np.array([[0.02, 0   ],
-                           [0,    0.02]])
+        self.R = np.array([[0.03, 0   ],
+                           [0,    0.03]])
     
     def cmd_callback(self,msg):
         # cmd_vel info
@@ -80,9 +76,11 @@ class KalmanFilter():
         # aruco landmark point callback
         self.landmark_x = msg.point.x
         self.landmark_y = msg.point.y
+        print(msg)
     
     def landmark_d_callback(self,msg):
         # aruco landmark distance callback
+        print(msg)
         self.landmark_d = msg.data
     
     def landmark_a_callback(self,msg):
@@ -90,18 +88,15 @@ class KalmanFilter():
         self.landmark_a = msg.data
 
     def filter(self):
+        self.dt = rospy.Time.now().to_sec() - self.T
+        if self.dt > 0.1:
+            self.dt = 1.0/self.Fs
+
         # mu -> state without noise
         x_k1_mu = self.x_k_mu + self.dt*self.v*np.cos(self.th_k_mu)
         y_k1_mu = self.y_k_mu + self.dt*self.v*np.sin(self.th_k_mu)
         th_k1_mu = self.th_k_mu + self.dt*self.w
-                                    # move joints in rviz
-                                    # wl = (self.v - 0.5 * self.l * self. w)/self.r
-                                    # wr = (self.v + 0.5 * self.l * self.w)/self.r
-                                    # time_stam = rospy.Time.now()
-                                    # t = time_stamp - self.t0
-                                    # self.js.position = [wr * t.to_sec(), wl * t.to_sec()]
-                                    # self.js.header.stamp = time_stamp
-                                    # self.pJS.publish(self.js)
+                                    
         
         # s -> state with noise
         v = ((self.wr + self.wl)/2) * self.r
@@ -135,7 +130,7 @@ class KalmanFilter():
             zth_mu = np.arctan2(Dy_mu,Dx_mu) - th_k1_mu
             # with noise
             zp_s = np.sqrt((Dx_s**2) + (Dy_s**2)) 
-            zth_s = np.arctan2(Dy_s,Dx_s) - th_k1_s
+            zth_s = np.arctan2(Dy_s,Dx_s) #- th_k1_s
             # Jacobian
             Gk = np.array([[-Dx_mu/np.sqrt(p_mu), -Dy_mu/np.sqrt(p_mu), 0],
                            [Dy_mu/p_mu,           -Dx_mu/p_mu,         -1]])
@@ -147,8 +142,8 @@ class KalmanFilter():
             mu_k_hat = np.array([[x_k1_mu],
                                  [y_k1_mu],
                                  [th_k1_mu]])
-            z_i_k = np.array([[zp_s],
-                              [zth_s]])
+            z_i_k = np.array([[self.landmark_d],
+                              [self.landmark_a]])
             z_i_k_hat = np.array([[zp_mu],
                                   [zth_mu]])
             # correction
@@ -204,6 +199,8 @@ class KalmanFilter():
         self.x_k_s = x_k1_s
         self.y_k_s = y_k1_s
         self.th_k_s = th_k1_s
+        #time
+        self.T = rospy.Time.now().to_sec()
     
     def main(self):
         # main ROS node execution
