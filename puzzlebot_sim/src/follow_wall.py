@@ -6,9 +6,9 @@ def follow_wall(side,scan,wall_dist=0.5, w_max = 0.9, v_max=0.3):
         # get distance ahead 
         distance_ahead_left = get_distance_in_sector(scan,
                                                      -np.pi,
-                                                     -np.pi + np.pi/12) # 15 deg left
+                                                     -np.pi + (30*np.pi/180)) # 15 deg left
         distance_ahead_right = get_distance_in_sector(scan,
-                                                      np.pi - np.pi/12,
+                                                      np.pi - (30*np.pi/180),
                                                       np.pi) # 15 deg right
         distance_ahead = (distance_ahead_left + distance_ahead_right) / 2.0 # 30 deg front span
 
@@ -16,10 +16,10 @@ def follow_wall(side,scan,wall_dist=0.5, w_max = 0.9, v_max=0.3):
         if side == 'right':
             distance_to_right = get_distance_in_sector(scan,
                                                        np.pi/2,
-                                                       np.pi/2 + np.pi/6)  # 30 deg span to the right
+                                                       np.pi/2 + (35*np.pi/180))  # 30 deg span to the right
         elif side == 'left':
             distance_to_left = get_distance_in_sector(scan,
-                                                      -np.pi/2 - np.pi/6,
+                                                      -np.pi/2 - (35*np.pi/180),
                                                       -np.pi/2)  # 30 deg span to the left
         else:
             print('Invalid side')

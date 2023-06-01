@@ -42,8 +42,8 @@ class motion_model():
 		self.sigma_k = np.array([[0.0,0.0,0.0],
 			   					 [0.0,0.0,0.0],
 								 [0.0,0.0,0.0]]) # initial state has no covariance
-		self.kr = 5	# gain right
-		self.kl = 5	# gain left
+		self.kr = 10	# gain right
+		self.kl = 10	# gain left
 		self.odom = Odometry()	# odom message
 		self.static_broadcaster = tf2_ros.StaticTransformBroadcaster()
 		t = TransformStamped()

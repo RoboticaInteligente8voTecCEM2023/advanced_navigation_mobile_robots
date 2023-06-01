@@ -59,7 +59,6 @@ class Odometry_kalman():
         # print(self.pose_stamped)
         self.odom.publish(self.pose_stamped)
         
-        t = time_stamp - self.t0
 
 
         self.x_k = x_k1
