@@ -244,75 +244,45 @@
       </link>
     </model>
     <state world_name='default'>
-      <sim_time>6590 115000000</sim_time>
-      <real_time>34 813531573</real_time>
-      <wall_time>1685596890 169701390</wall_time>
-      <iterations>34187</iterations>
+      <sim_time>3179 950000000</sim_time>
+      <real_time>486 980869184</real_time>
+      <wall_time>1685522392 747098321</wall_time>
+      <iterations>480635</iterations>
       <model name='Aruco tag0'>
-        <pose frame=''>1 2.5 0.3 0 -1.57 0</pose>
+        <pose frame=''>3.79402 1.97759 0.3 0 -1.57 0</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>1 2.5 0.3 0 -1.57 0</pose>
+          <pose frame=''>3.79402 1.97759 0.3 0 -1.57 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='Aruco tag1'>
-        <pose frame=''>1.93766 -3.92951 0.3 0.870428 -1.57 3.9e-05</pose>
+        <pose frame=''>3.67781 -1.90218 0.3 0 -1.57 0</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>1.93766 -3.92951 0.3 0.870428 -1.57 3.9e-05</pose>
+          <pose frame=''>3.67781 -1.90218 0.3 0 -1.57 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='Aruco tag10'>
-        <pose frame=''>5.51175 -2.08643 0.3 0 -1.57 0.000201</pose>
+        <pose frame=''>6.04246 -6.11304 0.3 -1.57 -1.57 0</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>5.51175 -2.08643 0.3 0 -1.57 0.000201</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='Aruco tag11'>
-        <pose frame=''>2.7 -0.5 0.3 -1.57 -1.57 0</pose>
-        <scale>1 1 1</scale>
-        <link name='robot_link'>
-          <pose frame=''>2.7 -0.5 0.3 -1.57 -1.57 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='Aruco tag12'>
-        <pose frame=''>5.00814 2.26528 0.3 2.4e-05 -1.57 -1.57002</pose>
-        <scale>1 1 1</scale>
-        <link name='robot_link'>
-          <pose frame=''>5.00814 2.26528 0.3 2.4e-05 -1.57 -1.57002</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='Aruco tag13'>
-        <pose frame=''>6.49816 0.008355 0.3 0 1.57 0</pose>
-        <scale>1 1 1</scale>
-        <link name='robot_link'>
-          <pose frame=''>6.49816 0.008355 0.3 0 1.57 0</pose>
+          <pose frame=''>6.04246 -6.11304 0.3 -1.57 -1.57 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='Aruco tag2'>
-        <pose frame=''>7.07479 0.499565 0.299999 -1.55874 -1.57 8.3e-05</pose>
+        <pose frame=''>5.0708 2.27722 0.299999 -1.5587 -1.57 4.6e-05</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>7.07479 0.499565 0.299999 -1.55874 -1.57 8.3e-05</pose>
+          <pose frame=''>5.0708 2.27722 0.299999 -1.5587 -1.57 4.6e-05</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -329,20 +299,20 @@
         </link>
       </model>
       <model name='Aruco tag4'>
-        <pose frame=''>7 -4 0.3 0 -1.57 -1.57</pose>
+        <pose frame=''>6.49776 -0.00974 0.3 0 -1.57 0</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>7 -4 0.3 0 -1.57 -1.57</pose>
+          <pose frame=''>6.49776 -0.00974 0.3 0 -1.57 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='Aruco tag5'>
-        <pose frame=''>5.6 5.1 0.3 -1.5704 0 0</pose>
+        <pose frame=''>5.62885 5.18176 0.3 -1.5704 -0 0.000399</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>5.6 5.1 0.3 -1.5704 0 0</pose>
+          <pose frame=''>5.62885 5.18176 0.3 -1.5704 -0 0.000399</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -359,10 +329,10 @@
         </link>
       </model>
       <model name='Aruco tag7'>
-        <pose frame=''>-1.3 0 0.3 0 -1.57 0</pose>
+        <pose frame=''>-0.706953 0.017781 0.3 0 -1.57 0</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>-1.3 0 0.3 0 -1.57 0</pose>
+          <pose frame=''>-0.706953 0.017781 0.3 0 -1.57 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -379,10 +349,10 @@
         </link>
       </model>
       <model name='Aruco tag9'>
-        <pose frame=''>2.70741 0.501632 0.3 -1.5704 -1.57 0.000399</pose>
+        <pose frame=''>5 2 0.3 -1.57 -1.57 0</pose>
         <scale>1 1 1</scale>
         <link name='robot_link'>
-          <pose frame=''>2.70741 0.501632 0.3 -1.5704 -1.57 0.000399</pose>
+          <pose frame=''>5 2 0.3 -1.57 -1.57 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -399,43 +369,43 @@
         </link>
       </model>
       <model name='unit_box'>
-        <pose frame=''>3 -0 0.499995 0 -1e-05 0</pose>
+        <pose frame=''>3 -8e-06 0.499995 -1e-05 -0 5e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>3 -0 0.499995 0 -1e-05 0</pose>
+          <pose frame=''>3 -8e-06 0.499995 -1e-05 -0 5e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.010615 0.006191 -9.78231 -0.012424 -0.021225 1.8e-05</acceleration>
-          <wrench>-0.010615 0.006191 -9.78231 0 -0 0</wrench>
+          <acceleration>0.004709 0.011055 -9.78158 -0.022108 0.009414 1e-06</acceleration>
+          <wrench>0.004709 0.011055 -9.78158 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_box_0'>
-        <pose frame=''>5 1.75001 0.499995 0 -1e-05 0</pose>
+        <pose frame=''>5 1.74999 0.499995 -1e-05 -0 6e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>5 1.75001 0.499995 0 -1e-05 0</pose>
+          <pose frame=''>5 1.74999 0.499995 -1e-05 -0 6e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.010615 -0.006191 -9.78231 0.012424 -0.021225 -1.8e-05</acceleration>
-          <wrench>-0.010615 -0.006191 -9.78231 0 -0 0</wrench>
+          <acceleration>0.004709 0.011055 -9.78158 -0.022108 0.009414 1e-06</acceleration>
+          <wrench>0.004709 0.011055 -9.78158 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_box_0_clone'>
-        <pose frame=''>5 -1.75002 0.499995 0 -1e-05 0</pose>
+        <pose frame=''>4.99999 -1.75002 0.499995 -1e-05 -0 -0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>5 -1.75002 0.499995 0 -1e-05 0</pose>
+          <pose frame=''>4.99999 -1.75002 0.499995 -1e-05 -0 -0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.010615 -0.006191 -9.78231 0.012424 -0.021225 -1.8e-05</acceleration>
-          <wrench>-0.010615 -0.006191 -9.78231 0 -0 0</wrench>
+          <acceleration>0.004709 0.011055 -9.78158 -0.022108 0.009414 1e-06</acceleration>
+          <wrench>0.004709 0.011055 -9.78158 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_box_1'>
-        <pose frame=''>7 0 0.499995 0 -1e-05 0</pose>
+        <pose frame=''>7 -8e-06 0.499995 -1e-05 -0 5e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>7 0 0.499995 0 -1e-05 0</pose>
+          <pose frame=''>7 -8e-06 0.499995 -1e-05 -0 5e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.010615 -0.006191 -9.78231 0.012424 -0.021225 -1.8e-05</acceleration>
-          <wrench>-0.010615 -0.006191 -9.78231 0 -0 0</wrench>
+          <acceleration>0.004709 0.011055 -9.78158 -0.022108 0.009414 1e-06</acceleration>
+          <wrench>0.004709 0.011055 -9.78158 0 -0 0</wrench>
         </link>
       </model>
       <light name='sun'>
@@ -444,7 +414,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>-3.59128 -0.09725 3.71323 0 0.742912 0.134389</pose>
+        <pose frame=''>-1.45919 -0.237562 7.9387 -0 1.1458 -0.191822</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -919,120 +889,6 @@
         <kinematic>0</kinematic>
       </link>
       <pose frame=''>6.04246 -6.11304 0 0 -0 0</pose>
-    </model>
-    <model name='Aruco tag11'>
-      <static>1</static>
-      <link name='robot_link'>
-        <visual name='front_visual'>
-          <geometry>
-            <box>
-              <size>0.33 0.33 0.005</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://tag_11/materials/scripts/</uri>
-              <uri>file://tag_11/materials/textures/</uri>
-              <name>Aruco/tag11</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='rear_visual'>
-          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
-          <geometry>
-            <box>
-              <size>0.33 0.33 0.005</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://tag_11/materials/scripts/</uri>
-              <uri>file://tag_11/materials/textures/</uri>
-              <name>Aruco/tag11</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>3.64795 0.059941 0 0 -0 0</pose>
-    </model>
-    <model name='Aruco tag12'>
-      <static>1</static>
-      <link name='robot_link'>
-        <visual name='front_visual'>
-          <geometry>
-            <box>
-              <size>0.33 0.33 0.005</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://tag_12/materials/scripts/</uri>
-              <uri>file://tag_12/materials/textures/</uri>
-              <name>Aruco/tag12</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='rear_visual'>
-          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
-          <geometry>
-            <box>
-              <size>0.33 0.33 0.005</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://tag_12/materials/scripts/</uri>
-              <uri>file://tag_12/materials/textures/</uri>
-              <name>Aruco/tag12</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>4.97119 2.41376 0 0 -0 0</pose>
-    </model>
-    <model name='Aruco tag13'>
-      <static>1</static>
-      <link name='robot_link'>
-        <visual name='front_visual'>
-          <geometry>
-            <box>
-              <size>0.33 0.33 0.005</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://tag_13/materials/scripts/</uri>
-              <uri>file://tag_13/materials/textures/</uri>
-              <name>Aruco/tag13</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='rear_visual'>
-          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
-          <geometry>
-            <box>
-              <size>0.33 0.33 0.005</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://tag_13/materials/scripts/</uri>
-              <uri>file://tag_13/materials/textures/</uri>
-              <name>Aruco/tag13</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>6.32791 -0.031464 0 0 -0 0</pose>
     </model>
   </world>
 </sdf>

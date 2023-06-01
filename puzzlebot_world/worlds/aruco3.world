@@ -1,0 +1,911 @@
+<sdf version='1.6'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <audio>
+      <device>default</device>
+    </audio>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='Aruco tag0'>
+      <static>1</static>
+      <link name='robot_link'>
+        <visual name='front_visual'>
+          <pose frame=''>0 0 0.0025 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://tag_0/materials/scripts/</uri>
+              <uri>model://tag_0/materials/textures/</uri>
+              <name>Aruco/tag0</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='rear_visual'>
+          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>-0.604925 0.518921 0 0 -0 0</pose>
+    </model>
+    <model name='room'>
+      <pose frame=''>3.8217 1.08653 0 0 -0 0</pose>
+      <link name='Wall_23'>
+        <collision name='Wall_23_Collision'>
+          <geometry>
+            <box>
+              <size>9.25 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_23_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>9.25 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>-6.3 -0.125 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='Wall_24'>
+        <collision name='Wall_24_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_24_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>-0 -4.675 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='Wall_25'>
+        <collision name='Wall_25_Collision'>
+          <geometry>
+            <box>
+              <size>9.5 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_25_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>9.5 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>6.3 0 0 0 -0 1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='Wall_26'>
+        <collision name='Wall_26_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_26_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>-0 4.675 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='Wall_27'>
+        <collision name='Wall_27_Collision'>
+          <geometry>
+            <box>
+              <size>0.4 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_27_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.4 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>-6.3 4.55 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <state world_name='default'>
+      <sim_time>23172 361000000</sim_time>
+      <real_time>249 959194292</real_time>
+      <wall_time>1685500455 478003637</wall_time>
+      <iterations>248345</iterations>
+      <model name='Aruco tag0'>
+        <pose frame=''>1.75577 -0.01544 0.300001 -1.57005 -1.57 1.57005</pose>
+        <scale>1 1 1</scale>
+        <link name='robot_link'>
+          <pose frame=''>1.75577 -0.01544 0.300001 -1.57005 -1.57 1.57005</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Aruco tag1'>
+        <pose frame=''>2.78357 -0.361909 0.285079 1.56185 0.000377 -0.457785</pose>
+        <scale>1 1 1</scale>
+        <link name='robot_link'>
+          <pose frame=''>2.78357 -0.361909 0.285079 1.56185 0.000377 -0.457785</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Aruco tag2'>
+        <pose frame=''>6.98489 1.79676 0.298549 1.5708 0.000796 1.57413</pose>
+        <scale>1 1 1</scale>
+        <link name='robot_link'>
+          <pose frame=''>6.98489 1.79676 0.298549 1.5708 0.000796 1.57413</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Aruco tag3'>
+        <pose frame=''>4.80092 -2.95911 0.3 1.57044 1.57 0.000435</pose>
+        <scale>1 1 1</scale>
+        <link name='robot_link'>
+          <pose frame=''>4.80092 -2.95911 0.3 1.57044 1.57 0.000435</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Aruco tag4'>
+        <pose frame=''>-0.036904 -1.72687 0.3 1.57 -0 1.57</pose>
+        <scale>1 1 1</scale>
+        <link name='robot_link'>
+          <pose frame=''>-0.036904 -1.72687 0.3 1.57 -0 1.57</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Aruco tag5'>
+        <pose frame=''>2 3 0.3 1.57 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='robot_link'>
+          <pose frame=''>2 3 0.3 1.57 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='room'>
+        <pose frame=''>4.24359 -0.002696 -0.539076 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_23'>
+          <pose frame=''>-2.05641 -0.127696 -0.539076 0 0 -1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_24'>
+          <pose frame=''>4.24359 -4.6777 -0.539076 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_25'>
+          <pose frame=''>10.5435 -0.002696 -0.539076 0 -0 1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_26'>
+          <pose frame=''>4.24359 4.6723 -0.539076 0 -0 3.14159</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_27'>
+          <pose frame=''>-2.05641 4.5473 -0.539076 0 0 -1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_box_0'>
+        <pose frame=''>0.919603 0.953635 0.132146 0 -0 0.574933</pose>
+        <scale>0.473245 1.10894 0.264293</scale>
+        <link name='link'>
+          <pose frame=''>0.919603 0.953635 0.132146 0 -0 0.574933</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0 0 0 0 -0 0</acceleration>
+          <wrench>-0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_box_0_clone'>
+        <pose frame=''>3.92535 1.49145 0.197769 -0 -0.000119 -1.95589</pose>
+        <scale>8.35496 1 1</scale>
+        <link name='link'>
+          <pose frame=''>3.92535 1.49145 0.197769 -0 -0.000119 -1.95589</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>3.99493 9.79999 -7e-06 -2.75598 -1.18998 -0</acceleration>
+          <wrench>3.99493 9.79999 -7e-06 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_box_0_clone_clone'>
+        <pose frame=''>5.67504 -0.28626 0.197923 0 -0 0.362901</pose>
+        <scale>0.893152 0.173306 1</scale>
+        <link name='link'>
+          <pose frame=''>5.67504 -0.28626 0.197923 0 -0 0.362901</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 -2e-06 0 9e-06 -0 0</acceleration>
+          <wrench>0 -2e-06 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_box_0_clone_clone_clone'>
+        <pose frame=''>2.99682 -2.17845 0.197765 0 0.000121 1.0607</pose>
+        <scale>2.52077 1 1</scale>
+        <link name='link'>
+          <pose frame=''>2.99682 -2.17845 0.197765 0 0.000121 1.0607</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>5.60685 9.79999 -9e-06 0.73128 -0.108911 2e-06</acceleration>
+          <wrench>5.60685 9.79999 -9e-06 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose frame=''>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>1.24253 -1.84355 11.9858 0 1.5578 0.00907</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <model name='unit_box_0_clone'>
+      <pose frame=''>2.91634 2.28259 0.197923 0 0 -0.831964</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.311577 0.367688 0.395847</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.311577 0.367688 0.395847</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='Aruco tag1'>
+      <static>1</static>
+      <link name='robot_link'>
+        <visual name='front_visual'>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_1/materials/scripts/</uri>
+              <uri>file://tag_1/materials/textures/</uri>
+              <name>Aruco/tag1</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='rear_visual'>
+          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_1/materials/scripts/</uri>
+              <uri>file://tag_1/materials/textures/</uri>
+              <name>Aruco/tag1</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>3.37676 3.81822 0 0 -0 0</pose>
+    </model>
+    <model name='Aruco tag2'>
+      <static>1</static>
+      <link name='robot_link'>
+        <visual name='front_visual'>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_2/materials/scripts/</uri>
+              <uri>file://tag_2/materials/textures/</uri>
+              <name>Aruco/tag2</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='rear_visual'>
+          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_2/materials/scripts/</uri>
+              <uri>file://tag_2/materials/textures/</uri>
+              <name>Aruco/tag2</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>3.90824 -0.03161 0 0 -0 0</pose>
+    </model>
+    <model name='unit_box_0_clone_clone'>
+      <pose frame=''>7.0689 -0.234393 0.197923 0 0 -1.84938</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>1.86133 2.23731 0.395847</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1.86133 2.23731 0.395847</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='unit_box_0_clone_clone_clone'>
+      <pose frame=''>4.57124 -1.72121 0.197923 0 -0 2.88195</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>1.04462 0.367688 0.395847</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1.04462 0.367688 0.395847</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='Aruco tag5'>
+      <static>1</static>
+      <link name='robot_link'>
+        <visual name='front_visual'>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_5/materials/scripts/</uri>
+              <uri>file://tag_5/materials/textures/</uri>
+              <name>Aruco/tag5</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='rear_visual'>
+          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_5/materials/scripts/</uri>
+              <uri>file://tag_5/materials/textures/</uri>
+              <name>Aruco/tag5</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>2.02848 2.99946 0 0 -0 0</pose>
+    </model>
+    <model name='Aruco tag3'>
+      <static>1</static>
+      <link name='robot_link'>
+        <visual name='front_visual'>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_3/materials/scripts/</uri>
+              <uri>file://tag_3/materials/textures/</uri>
+              <name>Aruco/tag3</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='rear_visual'>
+          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_3/materials/scripts/</uri>
+              <uri>file://tag_3/materials/textures/</uri>
+              <name>Aruco/tag3</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>4.69151 -1.6658 0 0 -0 0</pose>
+    </model>
+    <model name='unit_box_0'>
+      <pose frame=''>1.5408 1.33345 0.5 0 -0 0</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='Aruco tag4'>
+      <static>1</static>
+      <link name='robot_link'>
+        <visual name='front_visual'>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_4/materials/scripts/</uri>
+              <uri>file://tag_4/materials/textures/</uri>
+              <name>Aruco/tag4</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='rear_visual'>
+          <pose frame=''>0 0 -0.0025 0 -0 -3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.33 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://tag_4/materials/scripts/</uri>
+              <uri>file://tag_4/materials/textures/</uri>
+              <name>Aruco/tag4</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>-0.412883 -0.002137 0 0 -0 0</pose>
+    </model>
+  </world>
+</sdf>
