@@ -6,10 +6,10 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
   <!--node pkg="tf" type="static_transform_publisher" name="robot_on_the_map" args="0 0 0 0 0 0 /map /base_link 10"/-->
   <node pkg="puzzlebot_sim" type="aruco_detector_cam.py" name="aruco_detector"/>
-  <node pkg="puzzlebot_kalman" type="odometry_kalman_mu.py" name="mu"/>
+  <!--node pkg="puzzlebot_kalman" type="odometry_kalman_mu.py" name="mu"/>
   <node pkg="puzzlebot_kalman" type="odometry_kalman_s.py" name="s"/>
-  <node pkg="puzzlebot_kalman" type="motion_model_kalman.py" name="motion_model"/>
-  <node pkg="puzzlebot_kalman" type="observation_model_and_correction.py" name="observation_model_and_correction" output="screen"/>
+  <node pkg="puzzlebot_kalman" type="motion_model_kalman.py" name="motion_model"/-->
+  <node pkg="puzzlebot_kalman" type="kalman_filter.py" name="kalman" output="screen"/>
   <node pkg="puzzlebot_sim" type="reference_odometry.py" name="reference_odometry"/>
 </launch>
 

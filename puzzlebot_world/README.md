@@ -1,3 +1,6 @@
+
+All puzzlebot models belong to Manchester robotics, with main page link: https://manchester-robotics.com
+
 ### Puzzlebot_world
 
 This package contains all files for running Gazebo simulation with Puzzlebot in it. 

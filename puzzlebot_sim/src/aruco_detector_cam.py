@@ -110,7 +110,7 @@ class ArucoDetector():
                 z = (t[2][0] + 10.0) / 100.0 # add 10cm for distance between camera and base_link frame [m]
                 d = np.sqrt(x**2 + z**2)
                 dists.append(d)
-                a = np.arctan2(x,z)
+                a = np.arctan2(-x,z)
                 angles.append(a)
                 arucos_dict[ids[i]] = [d,a]
             # print('rvec:',rvecs)
