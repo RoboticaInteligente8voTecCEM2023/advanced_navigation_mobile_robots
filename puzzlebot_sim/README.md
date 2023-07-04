@@ -22,7 +22,9 @@ The robot changes to follow wall when an object has been detected in front based
 
 ![imagen](https://github.com/RoboticaInteligente8voTecCEM2023/advanced_navigation_mobile_robots/assets/67598380/34df2715-113f-4465-aff3-1f8fb0559465)
 
-Based on lidar information, the robot should always follow a wall at a certain distance. The controller takes lidar information at right side, and uses trigonometry to calculate the angle of the wall and robot to check if they are parallel to each other. If the angle is positive, it means the robot is facing the wall and should turn against it. Otherwise the robot is moving away from wall. At the same time, the robot should always be at a certain wall distance. This controller calculates the desired angular speed to align and move robot parallel to wall and always at certain distance, while keeping a linear speed.
+Based on lidar information, the robot should always follow a wall at a certain distance. The controller takes lidar information at right side, and uses trigonometry to calculate the angle of the wall and robot to check if they are parallel to each other. If the angle is positive, it means the robot is facing the wall and should turn against it. Otherwise the robot is moving away from wall. At the same time, the robot should always be at a certain wall distance. This controller calculates the desired angular speed to align and move robot parallel to wall and always at certain distance, while keeping a linear speed. When robot has no data from lidar at right sector, means there is no wall to follow to the right, so just perform right turn.
+
+For left hand rule, its the same logic, but mirrored.
 
 Robot should transition back to going to point when distance to reference line, that should cross each obstacle, is less than a threshold.
 
