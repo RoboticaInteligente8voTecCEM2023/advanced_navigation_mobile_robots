@@ -90,3 +90,10 @@ https://drive.google.com/file/d/1yNpWKjWp_Juj0GfuQFMgNc_AfnBCehhI/view
 And here:
 
 https://drive.google.com/file/d/1Z1MowJo9i2Rx8oNItYspimTw0rAMvuCk/view
+
+
+### Others
+
+Bug2 Algorithm: https://drive.google.com/file/d/1kVQwaFJ4qOxofnN0vzjCf87Gr6KzigGa/view?usp=sharing
+
+Mapping: https://drive.google.com/file/d/19b9cazM2Om6eK6kwbAOgXCu9w2tAC2vh/view?usp=sharing
